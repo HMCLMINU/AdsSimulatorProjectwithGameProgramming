@@ -21,10 +21,9 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{c0409f13-c6d4-4ff7-914d-1504472f0e69}</ProjectGuid>
-    <RootNamespace>Project1</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
-    <ProjectName>Simulation</ProjectName>
+    <ProjectGuid>{da694282-66aa-4d0f-9b34-1c8619f2fbb3}</ProjectGuid>
+    <RootNamespace>Simtest</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -89,14 +88,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\qnfm4\Desktop\GameProgrammingInC++\External\GLEW\include;C:\Users\qnfm4\Desktop\GameProgrammingInC++\External\SOIL\include;C:\Users\qnfm4\Desktop\GameProgrammingInC++\External\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\Users\qnfm4\Desktop\GameProgrammingInC++\External\rapidjson\include;C:\Users\qnfm4\Desktop\GameProgrammingInC++\External\GLEW\include;C:\Users\qnfm4\Desktop\GameProgrammingInC++\External\SOIL\include;C:\Users\qnfm4\Desktop\GameProgrammingInC++\External\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\qnfm4\Desktop\GameProgrammingInC++\External\GLEW\lib\win\x86;C:\Users\qnfm4\Desktop\GameProgrammingInC++\External\SOIL\lib\win\x86;C:\Users\qnfm4\Desktop\GameProgrammingInC++\External\SDL\lib\win\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_mixer.lib;SDL2_image.lib;glew32.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\qnfm4\Desktop\GameProgrammingInC++\External\GLEW\lib\win\x86;C:\Users\qnfm4\Desktop\GameProgrammingInC++\External\SDL\lib\win\x86;C:\Users\qnfm4\Desktop\GameProgrammingInC++\External\SOIL\lib\win\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -144,11 +142,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Simulation.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Simtest.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Simulation.h" />
+    <ClInclude Include="Simtest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

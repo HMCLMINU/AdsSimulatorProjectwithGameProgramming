@@ -4,16 +4,16 @@
 // Released under the BSD License
 // ----------------------------------------------------------------
 
-#include "Game.h"
+#include "Simulation.h"
 
-int main(int argc, char** argv)
+int main(int argc, char* argv[])
 {
-	Game game;
-	bool success = game.Initialize();
+	Simulation sim;
+	bool success = sim.Initialize();
 	if (success)
 	{
-		game.RunLoop();
+		sim.RunLoop();
 	}
-	game.Shutdown();
+	sim.Shutdown();
 	return 0;
 }

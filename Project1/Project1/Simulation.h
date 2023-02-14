@@ -9,19 +9,15 @@
 #include <vector>
 
 using namespace std;
-// Vector2 struct just stores x/y coordinates
-// (for now)
-struct Vector2
-{
-	float x;
-	float y;
-};
 
-// Game class
-class Game
+struct Vector2 {
+	int x, y;
+};
+// Simulation class
+class Simulation
 {
 public:
-	Game();
+	Simulation();
 	// Initialize the game
 	bool Initialize();
 	// Runs the game loop until the game is over
@@ -31,7 +27,7 @@ public:
 private:
 	// Helper functions for the game loop
 	void ProcessInput();
-	void UpdateGame();
+	void UpdateSimulation();
 	void GenerateOutput();
 
 	// Window created by SDL
@@ -43,9 +39,10 @@ private:
 	// Game should continue to run
 	bool mIsRunning;
 	
+	// Sampling time
+	int ts;
+
 	// Pong specific
-	// Direction of paddle
-	int mPaddleDir;
 	// Position of paddle
 	Vector2 mPaddlePos;
 	// Position of ball

@@ -18,12 +18,12 @@
     <ClCompile Include="main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Simulation.cpp">
+    <ClCompile Include="Simtest.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Simulation.h">
+    <ClInclude Include="Simtest.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
