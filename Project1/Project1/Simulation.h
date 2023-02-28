@@ -6,13 +6,12 @@
 
 #pragma once
 #include "SDL/SDL.h"
+#include "Math.h"
 #include <vector>
+#include <unordered_map>
 
 using namespace std;
 
-struct Vector2 {
-	int x, y;
-};
 // Simulation class
 class Simulation
 {
@@ -24,6 +23,12 @@ public:
 	void RunLoop();
 	// Shutdown the game
 	void Shutdown();
+
+	void AddActor(class Actor* actor);
+	void RemoveActor(class Actor* actor);
+
+	void AddSprite(class SpriteComponent* sprite);
+	void RemoveSprite(class SpriteComponent* sprite);
 private:
 	// Helper functions for the game loop
 	void ProcessInput();
@@ -38,16 +43,21 @@ private:
 	Uint32 mTicksCount;
 	// Game should continue to run
 	bool mIsRunning;
-	
+	// Track if we're updating actors right now
+	bool mUpdatingActors;
 	// Sampling time
 	int ts;
 
-	// Pong specific
+	// All the actors in the simulation
+	vector<class Actor*> mActors;
+	// Any pending actors
+	vector<class Actor*> mPendingActors;
+
+	// All the sprite components drawn
+	vector<class SpriteComponent*> mSprites;
+
+	// Simulation specific
 	// Position of paddle
-	Vector2 mPaddlePos;
-	// Position of ball
-	Vector2 mBallPos;
-	// Velocity of ball
-	Vector2 mBallVel;
-	vector<pair<Vector2, Vector2>> mBallInfo;
+	class Av* mAv;
+	vector<class Av*> mSurroundVehicles;
 };
