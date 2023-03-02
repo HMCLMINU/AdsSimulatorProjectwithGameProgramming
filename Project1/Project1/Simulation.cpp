@@ -5,6 +5,10 @@
 // ----------------------------------------------------------------
 
 #include "Simulation.h"
+#include <GL/glew.h>
+#include <algorithm>
+#include "Actor.h"
+#include "Ads.h"
 #include <iostream>
 
 using namespace std;
@@ -21,22 +25,7 @@ Simulation::Simulation()
 ,mIsRunning(true)
 ,ts(10) // 10ms sampling rate
 {
-	//
-	mPaddlePos.x = 10.0f;
-	mPaddlePos.y = 768.0f / 2.0f;
-
-	mBallPos.x = 1024.0f / 2.0f;
-	mBallPos.y = 768.0f / 2.0f;
-	mBallVel.x = -300.0f;
-	mBallVel.y = 335.0f;
-	mBallInfo.push_back({ mBallPos, mBallVel });
-
-	mBallPos.x = 700.0f / 2.0f;
-	mBallPos.y = 768.0f / 2.0f;
-	mBallVel.x = 300.0f;
-	mBallVel.y = 335.0f;
-
-	mBallInfo.push_back({ mBallPos, mBallVel });
+	
 }
 
 bool Simulation::Initialize()
@@ -48,7 +37,21 @@ bool Simulation::Initialize()
 		SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
 		return false;
 	}
-	
+	// Set OpenGL attributes
+	// Use the core OpenGL profile
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+	// Specify version 3.3
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+	// Request a color buffer with 8-bits per RGBA channel
+	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
+	// Enable double buffering
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+	// Force OpenGL to use hardware acceleration
+	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 	// Create an SDL Window
 	mWindow = SDL_CreateWindow(
 		"ADS Sim test world", // Window title
@@ -106,12 +109,19 @@ void Simulation::ProcessInput()
 	}
 	
 	// Get state of keyboard
-	const Uint8* state = SDL_GetKeyboardState(NULL);
+	const Uint8* keyState = SDL_GetKeyboardState(NULL);
 	// If escape is pressed, also end loop
-	if (state[SDL_SCANCODE_ESCAPE])
+	if (keyState[SDL_SCANCODE_ESCAPE])
 	{
 		mIsRunning = false;
 	}
+
+	mUpdatingActors = true;
+	for (auto actor : mActors)
+	{
+		actor->ProcessInput(keyState);
+	}
+	mUpdatingActors = false;
 }
 
 void Simulation::UpdateSimulation()
@@ -198,17 +208,17 @@ void Simulation::GenerateOutput()
 	SDL_RenderFillRect(mRenderer, &road);
 	
 	// Draw Ego - Green
-	SDL_Rect ego{
+	/*SDL_Rect ego{
 		static_cast<int>(mPaddlePos.x),
 		static_cast<int>(mPaddlePos.y - paddleH/2),
 		carH,
 		static_cast<int>(carW)
 	};
 	SDL_SetRenderDrawColor(mRenderer, 76, 153, 0, 255);
-	SDL_RenderFillRect(mRenderer, &ego);
+	SDL_RenderFillRect(mRenderer, &ego);*/
 	
 	// Draw SV - Orange
-	for (int i = 0; i < mBallInfo.size(); i++) {
+	/*for (int i = 0; i < mBallInfo.size(); i++) {
 		SDL_Rect sv{
 			static_cast<int>(mBallInfo[i].first.x - thickness / 2),
 			static_cast<int>(mBallInfo[i].first.y - thickness / 2),
@@ -217,7 +227,7 @@ void Simulation::GenerateOutput()
 		};
 		SDL_SetRenderDrawColor(mRenderer, 255, 165, 0, 255);
 		SDL_RenderFillRect(mRenderer, &sv);
-	}
+	}*/
 	
 	// Swap front buffer and back buffer
 	SDL_RenderPresent(mRenderer);
@@ -228,4 +238,33 @@ void Simulation::Shutdown()
 	SDL_DestroyRenderer(mRenderer);
 	SDL_DestroyWindow(mWindow);
 	SDL_Quit();
+}
+
+void Simulation::AddActor(Actor* actor)
+{
+	// If we're updating actors, need to add to pending
+	if (mUpdatingActors) {
+		mPendingActors.emplace_back(actor);
+	}
+	else {
+		mActors.emplace_back(actor);
+	}
+}
+
+void Simulation::RemoveActor(Actor* actor)
+{
+	// Is it in pending actors?
+	auto iter = find(mPendingActors.begin(), mPendingActors.end(), actor);
+	if (iter != mPendingActors.end()) {
+		// Swap to end of vector and pop off (avoid erase copies)
+		iter_swap(iter, mPendingActors.end() - 1);
+		mPendingActors.pop_back();
+	}
+	// Is it in actors?
+	iter = find(mActors.begin(), mActors.end(), actor);
+	if (iter != mActors.begin()) {
+		// Swap to end of vector and pop off
+		iter_swap(iter, mPendingActors.end() - 1);
+		mActors.pop_back();
+	}
 }

@@ -27,8 +27,8 @@ public:
 	void AddActor(class Actor* actor);
 	void RemoveActor(class Actor* actor);
 
-	void AddSprite(class SpriteComponent* sprite);
-	void RemoveSprite(class SpriteComponent* sprite);
+	//void AddSprite(class SpriteComponent* sprite);
+	//void RemoveSprite(class SpriteComponent* sprite);
 private:
 	// Helper functions for the game loop
 	void ProcessInput();
@@ -54,10 +54,10 @@ private:
 	vector<class Actor*> mPendingActors;
 
 	// All the sprite components drawn
-	vector<class SpriteComponent*> mSprites;
+	//vector<class SpriteComponent*> mSprites;
 
 	// Simulation specific
 	// Position of paddle
-	class Av* mAv;
-	vector<class Av*> mSurroundVehicles;
+	//class Ads* mAv;
+	//vector<class Ads*> mSurroundVehicles;
 };

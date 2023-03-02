@@ -16,7 +16,7 @@ public:
 	virtual void OnUpdateWorldTransform() {}
 
 	int GetUpdateOrder() const { return mUpdateOrder; }
-private:
+protected:
 	// Owning actor
 	class Actor* mOwner;
 	// Update order of component
